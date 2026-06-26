@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # ----------------------------------------------------------------
+  # Soroban smart contract: build (wasm) + run the test suite
+  # ----------------------------------------------------------------
+  contract:
+    name: Smart Contract (Rust / Soroban)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts/splitEX_escrow
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            contracts/splitEX_escrow/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('contracts/splitEX_escrow/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Build (native)
+        run: cargo build --verbose
+
+      - name: Run tests
+        run: cargo test --verbose
+
+      - name: Build WASM (release)
+        run: cargo build --target wasm32-unknown-unknown --release
+
+      - name: Upload WASM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: splitex-escrow-wasm
+          path: contracts/splitEX_escrow/target/wasm32-unknown-unknown/release/*.wasm
+          if-no-files-found: warn
+
+  # ----------------------------------------------------------------
+  # Frontend: sanity-check the static app boots / server is valid JS
+  # ----------------------------------------------------------------
+  frontend:
+    name: Frontend (static / Node server)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify required files exist
+        run: |
+          for f in index.html app.js style.css server.js config.js; do
+            test -f "$f" && echo "found $f" || { echo "missing $f"; exit 1; }
+          done
+
+      - name: Syntax-check server.js
+        run: node --check server.js
+
+      - name: Smoke test (server responds with 200)
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          sleep 2
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8080/)
+          kill $SERVER_PID
+          echo "HTTP status: $code"
+          test "$code" = "200"
