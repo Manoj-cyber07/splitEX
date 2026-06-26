@@ -74,5 +74,35 @@ Here are some pictures of the application in action:
 
 ---
 
+ ## Tech Stack
+
+ # Frontend
+
+  - React 18 (UMD build, loaded via CDN — no build step)
+  - Babel Standalone — in-browser JSX transpilation (classic runtime)
+  - Tailwind CSS (CDN / Play CDN)
+  - Vanilla JS single-file app (app.js) served as static assets
+
+ #  Backend / Hosting
+
+  - Node.js built-in http module — lightweight static file server (server.js), runs on port 8080 (no external    
+  dependencies)
+
+  # Blockchain (Web3)
+
+  - Stellar network (Testnet / Mainnet switchable)
+  - Soroban smart contracts (on-chain escrow)
+  - @stellar/stellar-sdk 13.3.0 — transaction building, simulation, RPC
+  - Soroban RPC: https://soroban-testnet.stellar.org
+  - Wallets: Freighter (stellar-freighter-api 1.5.1) and Albedo (@albedo-link/intent)
+
+ # Smart Contract
+
+  - Rust + Soroban SDK 22.0.0
+  - Compiled to WASM (crate-type = ["cdylib", "rlib"])
+
+  # Auth & Data
+
+  - Firebase 10.8.1 — Authentication + Firestore (compat SDK)
 
 
