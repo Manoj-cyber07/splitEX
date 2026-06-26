@@ -105,4 +105,6 @@ Here are some pictures of the application in action:
 
   - Firebase 10.8.1 — Authentication + Firestore (compat SDK)
 
-
+ ## CI/CD
+This project uses GitHub Actions for automated deployment to Vercel.
+Every push to main triggers a build and deploy.
