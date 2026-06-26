@@ -59,15 +59,15 @@ Then open http://127.0.0.1:8080 in your browser.
 Here are some pictures of the application in action:
 
 ### Balance Displayed
-![Balance]()
+![Balance](screenshot/wallet_balance.png)
 
 
 ### Wallet Options Available
-![Wallet Options]()
+![Wallet Options](screenshot/Diff_wallet.png)
 
 
 ### Mobile Responsive View
-![Mobile](
+![Mobile](screenshot/ph_view.png)
 
 *** For more screenshot check out screenshot folder ***
 
