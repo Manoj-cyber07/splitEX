@@ -9,7 +9,7 @@ SplitEX allows you to split bills, share expenses and settle payments trustlessl
 [SplitEX](https://split-ex-xi.vercel.app/)
 
 ## Demo Video
-[Watch Full Demo on YouTube]()
+[Watch Full Demo on YouTube](https://youtu.be/Yx_DbBqKfR0)
 
 
 ## Contract Information
