@@ -2,7 +2,7 @@
 **A Decentralized Web3 Bill Splitting Application built on the Stellar Blockchain!** 
 SplitEX allows you to split bills, share expenses and settle payments trustlessly through Soroban Smart Contracts on Stellar.
 
-
+![SplitChain Banner](screenshot/main_page.png)
 ---
 
 ## Live Demo
